@@ -1,4 +1,5 @@
-import React from "react"
+import React ,{useRef} from "react"
+
 
 import { 
   useTable, 
@@ -18,6 +19,7 @@ import {
   chakra,
   Flex,
   IconButton,
+  Button,
   Text,
   Tooltip,
   Select,
@@ -43,17 +45,19 @@ import {
   ArrowRightIcon,
   ArrowLeftIcon,
   ChevronRightIcon,
+  DownloadIcon,
   ChevronLeftIcon
 } from "@chakra-ui/icons";
 
-
+import { CSVLink } from "react-csv";
 
 //Chakra UI DataTable Function
 function DataTable ({p_data,p_columns})  {
   //transform memo
   const data = React.useMemo(() =>p_data,[])
   const columns = React.useMemo(() => p_columns,[])
-  
+  const csvLink = useRef() 
+ 
   //display default
   const defaultValue = 10;// display num def
   const pageEntries = [10, 20, 30, 40, 50];//select display num
@@ -65,6 +69,9 @@ function DataTable ({p_data,p_columns})  {
           state:{globalFilter,pageIndex,pageSize}} =
      useTable({ columns, data, initialState:{ pageIndex: 0}}, useGlobalFilter,useSortBy,usePagination);
 
+  const getTransactionData = async() => {
+   csvLink.current.link.click()
+  }
 
   // render 
   return (
@@ -87,7 +94,6 @@ function DataTable ({p_data,p_columns})  {
        </code>
      </pre>
     */}
-
     {/* global filter(search) fields  */}
     <Flex alignItems="right">
       <Spacer /> 
@@ -217,6 +223,19 @@ function DataTable ({p_data,p_columns})  {
               </option>
             ))}
           </Select>
+          {/* CSV Output*/}
+          <Button
+            onClick={getTransactionData}
+            leftIcon={<DownloadIcon h={6} w={6} />}
+            ml={8}
+          > Download </Button>
+          <CSVLink
+           data={data}
+           filename='transactions.csv'
+           className='hidden'
+           ref={csvLink}
+           target='_blank'
+          />
         </Flex>
         {/* next button  */}
         <Flex>
