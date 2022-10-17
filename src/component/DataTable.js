@@ -52,7 +52,7 @@ import {
 import { CSVLink } from "react-csv";
 
 //Chakra UI DataTable Function
-function DataTable ({p_data,p_columns})  {
+function DataTable ({p_data,p_columns,loading})  {
   //transform memo
   const data = React.useMemo(() =>p_data,[])
   const columns = React.useMemo(() => p_columns,[])
@@ -61,6 +61,7 @@ function DataTable ({p_data,p_columns})  {
   //display default
   const defaultValue = 10;// display num def
   const pageEntries = [10, 20, 30, 40, 50];//select display num
+  
 
   //react-table hooks
   const { getTableProps, getTableBodyProps, headerGroups, prepareRow ,page,
@@ -72,6 +73,7 @@ function DataTable ({p_data,p_columns})  {
   const getTransactionData = async() => {
    csvLink.current.link.click()
   }
+
 
   // render 
   return (
