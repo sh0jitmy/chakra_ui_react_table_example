@@ -1,0 +1,5 @@
+procpath: procdummy.txt
+register:
+ - F_REGISTER1
+ - F_REGISTER2
+ - F_REGISTER3

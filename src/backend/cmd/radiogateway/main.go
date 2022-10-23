@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"github.com/gin-gonic/gin"
 	"net/http"
         "github.com/gin-contrib/cors"
@@ -20,22 +21,32 @@ func main() {
 	r.Use(cors.Default())
 
 	radiocon := controller.New() 
-
+	radiocon.Start() 
+	
 	r.GET("/rmf", func(c *gin.Context) {
-		result,err := radiocon.Get(c.FullPath())
+		result,err := radiocon.Get("rmf")
+		if err != nil {
+			resCode(c, http.StatusOK, "internal error")
+		}else {
+			c.Data(http.StatusOK, "application/json",result) 
+		}
+	})
+	r.GET("/property", func(c *gin.Context) {
+		result,err := radiocon.Get("property")
+		log.Println(result)	
 		if err != nil {
 			resCode(c, http.StatusOK, "internal error")
 		} else {
 			c.Data(http.StatusOK, "application/json",result)
 		}
 	})
-	r.GET("/property", func(c *gin.Context) {
-		result,err := radiocon.Get(c.FullPath())
+	r.GET("/statusreg", func(c *gin.Context) {
+		result,err := radiocon.Get("statusreg")
+		log.Println(result)	
 		if err != nil {
 			resCode(c, http.StatusOK, "internal error")
 		} else {
 			c.Data(http.StatusOK, "application/json",result)
-			//c.Data(http.StatusOK, result)
 		}
 	})
 	r.Run() // listen and serve on 0.0.0.0:8080
