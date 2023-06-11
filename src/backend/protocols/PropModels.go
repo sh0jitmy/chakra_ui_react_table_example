@@ -1,8 +1,8 @@
 package protocols 
 
 type Property struct {
-	Name string
 	ID string
 	Value string
+	NewValue string
 	Updateat string
 }

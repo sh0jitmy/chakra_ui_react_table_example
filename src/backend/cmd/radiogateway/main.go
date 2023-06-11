@@ -49,7 +49,7 @@ func main() {
 			c.Data(http.StatusOK, "application/json",result)
 		}
 	})
-	r.Run() // listen and serve on 0.0.0.0:8080
+	r.Run(":58080") // listen and serve on 0.0.0.0:8080
 }
 
 func resCode(ctx *gin.Context, code int, data ...interface{}) {

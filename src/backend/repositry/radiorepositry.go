@@ -15,13 +15,11 @@ func New()(*RadioRepositry) {
 	pc := cache.New(cache.NoExpiration,cache.NoExpiration)
 	props := []protocols.Property {
 		{
-			Name : "TestName1",
 			ID : "Test1",
 			Value : "TestValue1",
 			Updateat : "2022/08/13 00:00:00",
 		},
 		{
-			Name : "TestName2",
 			ID : "Test2",
 			Value: "TestValue2",
 			Updateat : "2022/08/13 00:00:00",
@@ -39,7 +37,6 @@ func (repos *RadioRepositry) Update(path string,datamap map[string]string) {
 	for k,v := range datamap {
 		//props[pindex].ID = path + string(pindex+1) 
 		props[pindex].ID = k 
-		props[pindex].Name = k
 		props[pindex].Value = v 
 		props[pindex].Updateat = time.Now().Format("2006-01-02 15:04:05") 
 		pindex++			

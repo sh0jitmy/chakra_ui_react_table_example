@@ -4,7 +4,7 @@ import {
   useQuery,
   useQueryClient,
 } from 'react-query';
-const GET_URL = "http://localhost:8080/property";
+const GET_URL = "http://localhost:58080/property";
 
 const proptable = [
  {Name:"Name1",ID:"ID1",Value:"Value1",Updateat:"2022/08/13 00:00:00"},
@@ -22,9 +22,17 @@ const proptable = [
 
 
 export const usePropQuery = () => {
-  const result = useQuery(["proplist"],getPropList);
+  const result = useQuery(["proplist"],getPropList, { staleTime: Infinity });
   return result 
 };
+
+export const useEditPropQuery = () => {
+  const result = usePropQuery();	
+  for (var data in result) {
+    data.Edited = false
+  } 
+  return result 
+}
 
 const getPropList = async() => {
   try {

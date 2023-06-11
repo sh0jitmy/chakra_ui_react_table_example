@@ -52,11 +52,13 @@ import {
 import { CSVLink } from "react-csv";
 
 //Chakra UI DataTable Function
-function DataTable ({p_data,p_columns,loading})  {
+function DataTable ({p_data,p_columns,loading,updateTableData})  {
   //transform memo
+  //change editable code (Memo -> useState)
   const data = React.useMemo(() =>p_data,[])
   const columns = React.useMemo(() => p_columns,[])
   const csvLink = useRef() 
+  
  
   //display default
   const defaultValue = 10;// display num def
@@ -68,12 +70,13 @@ function DataTable ({p_data,p_columns,loading})  {
           pageOptions,pageCount,canPreviousPage,canNextPage,gotoPage,nextPage,previousPage,setPageSize,
           setGlobalFilter,preGlobalFilteredRows,
           state:{globalFilter,pageIndex,pageSize}} =
-     useTable({ columns, data, initialState:{ pageIndex: 0}}, useGlobalFilter,useSortBy,usePagination);
+     useTable({ columns, data, initialState:{ pageIndex: 0},updateTableData}, useGlobalFilter,useSortBy,usePagination);
 
   const getTransactionData = async() => {
    csvLink.current.link.click()
   }
 
+ 
 
   // render 
   return (
@@ -258,6 +261,19 @@ function DataTable ({p_data,p_columns,loading})  {
           </Tooltip>
         </Flex>
       </Flex>
+    <Flex justifyContent="max-content" m={4} alignItems="left">
+      <Spacer/>
+      <Button
+        colorScheme='teal'
+        onClick={getTransactionData}
+        ml={8}
+      > 設定更新 </Button>
+      <Button
+        colorScheme='blue'
+        onClick={getTransactionData}
+        ml={8}
+      > リセット </Button>
+    </Flex>
    </div>
   )
 }

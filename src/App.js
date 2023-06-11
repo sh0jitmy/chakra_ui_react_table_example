@@ -7,25 +7,54 @@ import {
 
 
 import DataTable from './component/DataTable'
+import { EditableCell } from './component/EditableCell'
 import { BsCheckCircle,BsX } from "react-icons/bs";
 import { usePropQuery } from "./hooks/usePropQuery.js"
 
+const QueryPropListTable = () => {
+  const {data,isLoading,error} = usePropQuery();
+  if (isLoading || !data) {
+    return <div>Loading...</div>
+  }
+  return ( 
+    <PropListTable p_data={data} />
+  )
+}
+
+
 // Example Table
-const PropListTable = ()=>{
+const PropListTable = ({p_data})=>{
+  const [data, setData] = React.useState(p_data);
+  const updateTableData = (
+    rowIndex,
+    columnId,
+    newValue,
+  ) => {
+    setData(
+      data.map((row, index) => {
+        if (index === rowIndex) {
+          return {
+            ...data[rowIndex],
+            [columnId]: newValue,
+            ["edited"]: true,
+          };
+        }
+        return row;
+      }),
+    );
+  };
+
   //const columns = React.useMemo(
   // () => [
   const columns = [ 
-    {
-      Header: '設定項目',
-      accessor: 'Name',
-    },
     {
       Header: 'ID',
       accessor: 'ID',
     },
     {
-      Header: '現在の設定',
+      Header: '設定値',
       accessor: 'Value',
+      Cell: EditableCell
     },
     {
       Header: '更新時刻',
@@ -33,12 +62,8 @@ const PropListTable = ()=>{
     },
   ]
   //const [data , isLoding,error] = usePropQuery()
-  const {data,isLoading,error} = usePropQuery();
-  if (isLoading || !data) {
-    return <div>Loading...</div>
-  }
   return (
-      <DataTable p_data={data} p_columns={columns} />
+      <DataTable p_data={data}  p_columns={columns} updateTableData={updateTableData}/>
   )
 }
 
@@ -50,7 +75,7 @@ function App() {
       <ChakraProvider>
         <Flex direction="column" p={10}>
           <Heading mb={4}>React ChakraUI Table</Heading>
-          <PropListTable />
+          <QueryPropListTable />
         </Flex>
       </ChakraProvider>
     </QueryClientProvider>
