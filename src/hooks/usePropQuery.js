@@ -27,10 +27,13 @@ export const usePropQuery = () => {
 };
 
 export const useEditPropQuery = () => {
-  const result = usePropQuery();	
-  for (var data in result) {
-    data.Edited = false
-  } 
+  const result = usePropQuery();
+  if (result.data != null )
+  {
+  for (var entry = 0 ; entry <  result.data.length; entry++) {
+    Object.assign(result.data[entry],{"edited": false});
+  }
+  }
   return result 
 }
 

@@ -9,10 +9,10 @@ import {
 import DataTable from './component/DataTable'
 import { EditableCell } from './component/EditableCell'
 import { BsCheckCircle,BsX } from "react-icons/bs";
-import { usePropQuery } from "./hooks/usePropQuery.js"
+import { usePropQuery,useEditPropQuery } from "./hooks/usePropQuery.js"
 
 const QueryPropListTable = () => {
-  const {data,isLoading,error} = usePropQuery();
+  const {data,isLoading,error} = useEditPropQuery();
   if (isLoading || !data) {
     return <div>Loading...</div>
   }
