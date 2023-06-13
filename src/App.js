@@ -35,8 +35,7 @@ const PropListTable = ({p_data})=>{
         if (index === rowIndex) {
           return {
             ...data[rowIndex],
-            [columnId]: newValue,
-            ["edited"]: true,
+            [columnId]: newValue
           };
         }
         return row;

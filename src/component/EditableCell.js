@@ -23,6 +23,8 @@ export const EditableCell = ({
     setValue(value);
   }, [value]);
 
-  return <input value={value2} onChange={onChange} onBlur={onBlur} />;
+  return <input value={value2} onChange={onChange} onBlur={onBlur}  />;
 };
+
+
 

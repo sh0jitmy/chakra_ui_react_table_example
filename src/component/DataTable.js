@@ -55,7 +55,8 @@ import { CSVLink } from "react-csv";
 function DataTable ({p_data,p_columns,loading,updateTableData})  {
   //transform memo
   //change editable code (Memo -> useState)
-  const data = React.useMemo(() =>p_data,[])
+  //const data = React.useMemo(() =>p_data,[])
+  const data = p_data
   const columns = React.useMemo(() => p_columns,[])
   const csvLink = useRef() 
   
@@ -151,10 +152,16 @@ function DataTable ({p_data,p_columns,loading,updateTableData})  {
       <Tbody {...getTableBodyProps()}>
         {page.map((row,i) => {
           prepareRow(row)
+          var color = 'white'
+          if (row.original["Value"] != row.original["fetchValue"]) {
+             color = 'pink'
+          } else {
+             color = 'white'
+          }
           return (
             <Tr {...row.getRowProps()}>
               {row.cells.map((cell) => (
-                <Td {...cell.getCellProps()} isNumeric={cell.column.isNumeric}>
+                <Td {...cell.getCellProps()} isNumeric={cell.column.isNumeric} bg={color} >
                   {cell.render('Cell')}
                 </Td>
               ))}
