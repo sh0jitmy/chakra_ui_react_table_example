@@ -268,6 +268,7 @@ function DataTable ({p_data,p_columns,loading,updateTableData})  {
           </Tooltip>
         </Flex>
       </Flex>
+{/*
     <Flex justifyContent="max-content" m={4} alignItems="left">
       <Spacer/>
       <Button
@@ -281,6 +282,7 @@ function DataTable ({p_data,p_columns,loading,updateTableData})  {
         ml={8}
       > リセット </Button>
     </Flex>
+*/}
    </div>
   )
 }

@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { CellProps } from 'react-table';
+import { Input } from '@chakra-ui/react'
 
 // Create an editable cell renderer
 export const EditableCell = ({
@@ -23,7 +24,8 @@ export const EditableCell = ({
     setValue(value);
   }, [value]);
 
-  return <input value={value2} onChange={onChange} onBlur={onBlur}  />;
+  //return <input value={value2} onChange={onChange} onBlur={onBlur}  />;
+  return <Input value={value2} onChange={onChange} onBlur={onBlur} bgopacity="0%" />;
 };
 
 
