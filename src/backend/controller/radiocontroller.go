@@ -21,18 +21,7 @@ type RadioController struct {
 }
 
 func (radiocon *RadioController) Start() {
-	radiocon.rdao.Config("config/registerconf.yml")
-	radiocon.sched.Every(SCHED_POLL_INTERVAL).Milliseconds().Do(radiocon.ObserveSchedule)
-	radiocon.sched.StartAsync()
 
-}
-
-func (radiocon *RadioController) ObserveSchedule() {
-	//fmt.Println("sched call")
-	data ,err := radiocon.rdao.ProcRead()
-	if err == nil {
-		radiocon.repos.Update("statusreg",data)
-	}
 }
 
 
@@ -47,13 +36,12 @@ func (radiocon *RadioController) Get (path string) ([]byte,error){
 	return data,err
 }
 
-func (radiocon *RadioController) Put (path string, data []byte) ([]byte,error){
-	props := radiocon.repos.Get(path)
-        data,err := json.Marshal(props)
+func (radiocon *RadioController) Update (data []byte) (error){
+	err := radiocon.repos.Update(data)
 	if err != nil {
 		log.Fatal(err)
 	}
-	return data,err
+	return err
 }
 
 func New()(*RadioController) {

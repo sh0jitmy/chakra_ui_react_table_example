@@ -20,22 +20,65 @@ const proptable = [
  {Name:"Name11",ID:"ID11",Value:"Value11",Updateat:"2022/08/13 00:00:00"},
 ];
 
-
-export const usePropQuery = () => {
-  const result = useQuery(["proplist"],getPropList, { staleTime: Infinity });
-  return result 
-};
-
 export const useEditPropQuery = () => {
   const result = usePropQuery();
   if (result.data != null )
   {
     for (var entry = 0 ; entry <  result.data.length; entry++) {
       Object.assign(result.data[entry],{"fetchValue": result.data[entry]["Value"]});
-      //Object.assign(result.data[entry],{"edited": false});
     }
   }
   return result 
+}
+
+export const useEditPropMutation = () => {
+  const mutation = useMutation((data) => {updateEditPropList(data);})
+  return {mutation}
+}
+
+
+
+
+export const usePropQuery = () => {
+  const result = useQuery(["proplist"],getPropList, { staleTime: Infinity });
+  return result 
+};
+
+export const usePropMutation = () => {
+  const result = useMutation((data) => {updatePropList(data);})
+  return result;
+};
+
+
+const updateEditPropList = async(reqdata) => {
+  if (reqdata == null) {
+    return
+  }
+  for (var entry = 0 ; entry <  reqdata.length; entry++) {
+    delete reqdata[entry]["fetchValue"];
+  }
+  try {
+    const res = await axios.put(GET_URL,reqdata);
+    console.log(res)
+    return res.data
+  } catch (err) {
+   return err.error;
+  }
+  return
+}
+
+const updatePropList = async(data) => {
+  if (data == null) {
+    return
+  }
+  try {
+    const res = await axios.put(GET_URL,data);
+    console.log(res)
+    return res.data
+  } catch (err) {
+   return err.error;
+  }
+  return
 }
 
 const getPropList = async() => {
@@ -48,4 +91,3 @@ const getPropList = async() => {
   }
   return
 }
-

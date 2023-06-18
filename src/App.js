@@ -9,7 +9,7 @@ import {
 import DataTable from './component/DataTable'
 import { EditableCell } from './component/EditableCell'
 import { BsCheckCircle,BsX } from "react-icons/bs";
-import { usePropQuery,useEditPropQuery } from "./hooks/usePropQuery.js"
+import { usePropQuery,useEditPropQuery,useEditPropMutation } from "./hooks/usePropQuery.js"
 
 
 const QueryPropListTable = () => {
@@ -26,6 +26,9 @@ const QueryPropListTable = () => {
 // Example Table
 const PropListTable = ({p_data,p_refetch})=>{
   const [data, setData] = React.useState(p_data);
+  const {mutation} = useEditPropMutation();
+
+ 
   const updateTableData = (
     rowIndex,
     columnId,
@@ -44,16 +47,18 @@ const PropListTable = ({p_data,p_refetch})=>{
     );
   };
 
-  const useHandleUpdate = () => {
+  const useHandleUpdate = async() => { 
+      mutation.mutate(data);
+     // {
+     //   onSuccess: async () => { p_refetch();},
+     //   onError: async() => { console.log("error");}
+     // };
   }; // update the callback if the state changes
-  
-  const useHandleRefetch = () => {
+  const useHandleRefetch = async() => {
       p_refetch();
   }; // update the callback if the state changes
 
 
-  //const columns = React.useMemo(
-  // () => [
   const columns = [ 
     {
       Header: 'ID',
@@ -70,6 +75,8 @@ const PropListTable = ({p_data,p_refetch})=>{
     },
   ]
   //const [data , isLoding,error] = usePropQuery()
+          // {/*onClick={useHandleRefetch}*/}
+          // onClick={usehandleUpdate}
   return (
     <div>
       <DataTable p_data={data}  p_columns={columns} updateTableData={updateTableData}/>

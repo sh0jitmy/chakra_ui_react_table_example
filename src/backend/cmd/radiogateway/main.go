@@ -1,6 +1,7 @@
 package main
 
 import (
+	"io/ioutil"
 	"log"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -23,15 +24,20 @@ func main() {
 	radiocon := controller.New() 
 	radiocon.Start() 
 	
-	r.GET("/rmf", func(c *gin.Context) {
-		result,err := radiocon.Get("rmf")
+	r.PUT("/property", func(c *gin.Context) {
+		buf, err := ioutil.ReadAll(c.Request.Body) 
+		if err != nil {
+			resCode(c, http.StatusBadRequest, "invalid request")
+                }
+                log.Println(string(buf))
+                err = radiocon.Update(buf)
 		if err != nil {
 			resCode(c, http.StatusOK, "internal error")
-		}else {
-			c.Data(http.StatusOK, "application/json",result) 
+		} else {
+			resCode(c, http.StatusOK, "ok")
 		}
 	})
-	r.GET("/property", func(c *gin.Context) {
+       	r.GET("/property", func(c *gin.Context) {
 		result,err := radiocon.Get("property")
 		log.Println(result)	
 		if err != nil {
@@ -40,15 +46,7 @@ func main() {
 			c.Data(http.StatusOK, "application/json",result)
 		}
 	})
-	r.GET("/statusreg", func(c *gin.Context) {
-		result,err := radiocon.Get("statusreg")
-		log.Println(result)	
-		if err != nil {
-			resCode(c, http.StatusOK, "internal error")
-		} else {
-			c.Data(http.StatusOK, "application/json",result)
-		}
-	})
+
 	r.Run(":58080") // listen and serve on 0.0.0.0:8080
 }
 

@@ -1,6 +1,7 @@
 package repositry
 
 import (
+	"encoding/json"
 	"time"
 	"github.com/patrickmn/go-cache"
 	"local.com/protocols"
@@ -31,17 +32,17 @@ func New()(*RadioRepositry) {
 	}
 }
 
-func (repos *RadioRepositry) Update(path string,datamap map[string]string) {
-	props := make([]protocols.Property,len(datamap))	
-	var pindex int = 0
-	for k,v := range datamap {
+func (repos *RadioRepositry) Update(data []byte) (error){
+	var props []protocols.Property	
+	if err := json.Unmarshal(data,&props); err != nil {
+		return err
+        }
+	for _,v := range props {
 		//props[pindex].ID = path + string(pindex+1) 
-		props[pindex].ID = k 
-		props[pindex].Value = v 
-		props[pindex].Updateat = time.Now().Format("2006-01-02 15:04:05") 
-		pindex++			
+		v.Updateat = time.Now().Format("2006-01-02 15:04:05") 
 	}
-	repos.cache.Set(path,props,cache.NoExpiration)	
+	repos.cache.Set("property",props,cache.NoExpiration)	
+	return nil
 }
 
 func (repos *RadioRepositry) Get(path string) (interface{}) {
